@@ -91,10 +91,10 @@ export default function Dashboard() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="mt-6 space-y-5 rounded-lg bg-white p-5 shadow-sm">
-            <Input
-              label="Notice board URL"
-              type="url"
-              placeholder="https://example.edu/notices"
+           <Input
+            label="Page URL"
+            type="url"
+            placeholder="https://example.com/announcements"
               value={sourceUrl}
               onChange={(e) => setSourceUrl(e.target.value)}
               error={urlError}
