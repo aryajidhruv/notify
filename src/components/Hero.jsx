@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-// Column heights as % of the stage: tallest at the edges, shortest in the middle (the valley)
 const HEIGHTS = [100, 84, 68, 56, 38, 56, 68, 84, 100];
 
-// Light catching the top edge of each column
 const GLINTS = [
   "via-sky-300/80",
   "via-white/50",
@@ -18,7 +16,6 @@ const GLINTS = [
   "via-sky-300/80",
 ];
 
-// Kinds of pages Notify is made for
 const SOURCES = [
   "Government sites",
   "City and council pages",
@@ -29,9 +26,8 @@ const SOURCES = [
 
 export default function Hero() {
   const { user, loading } = useAuth();
-
-  // The one motion on the page: columns rise from the centre outward on load
   const [ready, setReady] = useState(false);
+
   useEffect(() => {
     const id = setTimeout(() => setReady(true), 60);
     return () => clearTimeout(id);
@@ -39,8 +35,8 @@ export default function Hero() {
 
   return (
     <section className="relative isolate overflow-hidden bg-black text-white">
-      {/* Content Container - Dynamic padding instead of fixed min-heights */}
-      <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center px-4 pt-12 pb-28 text-center sm:pt-24 sm:pb-36">
+      {/* Content Container */}
+      <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center px-4 pt-10 pb-32 text-center sm:pt-20 sm:pb-40">
         <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-6xl leading-tight">
           Stop refreshing pages. Get an email when it happens.
         </h1>
@@ -75,10 +71,10 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Column stage (decorative background) */}
+      {/* Background Decorative Columns */}
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 flex h-[25%] sm:h-[35%] items-end pointer-events-none"
+        className="absolute inset-x-0 bottom-0 flex h-[22%] sm:h-[32%] items-end pointer-events-none"
       >
         {HEIGHTS.map((h, i) => (
           <div
@@ -86,10 +82,9 @@ export default function Hero() {
             className="relative flex-1 border-l border-white/[0.07] bg-gradient-to-b from-neutral-950 to-black transition-[height] duration-1000 ease-out motion-reduce:transition-none"
             style={{
               height: ready ? `${h}%` : "0%",
-              transitionDelay: `${Math.abs(i - 4) * 90}ms`, // fixed syntax typo
+              transitionDelay: `${Math.abs(i - 4) * 90}ms`,
             }}
           >
-            {/* Thin light line on top of the column */}
             <span
               className={`absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent ${GLINTS[i]} to-transparent`}
             />
@@ -97,13 +92,21 @@ export default function Hero() {
         ))}
       </div>
 
-      {/* Bottom source tags */}
-      <div className="absolute inset-x-0 bottom-4 sm:bottom-6 z-10 flex flex-wrap items-center justify-center gap-x-4 sm:gap-x-6 gap-y-1 px-4 text-[11px] sm:text-xs text-white/40">
-        {SOURCES.map((s) => (
-          <span key={s} className="whitespace-nowrap">
-            {s}
-          </span>
-        ))}
+      {/* Responsive Source Tags Strip */}
+      <div className="absolute inset-x-0 bottom-3 sm:bottom-6 z-20 overflow-hidden py-1">
+        {/* Mobile: Smooth Horizontal Marquee / Desktop: Clean Centered Flex */}
+        <div className="flex w-full items-center justify-center [mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)] sm:[mask-image:none]">
+          <div className="flex shrink-0 animate-marquee sm:animate-none items-center justify-around gap-6 sm:gap-8 text-[11px] sm:text-xs text-white/40">
+            {SOURCES.concat(SOURCES).map((s, idx) => (
+              <span
+                key={`${s}-${idx}`}
+                className="whitespace-nowrap px-1 transition-colors hover:text-white/70"
+              >
+                {s}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
