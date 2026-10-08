@@ -9,66 +9,60 @@ import Input from "../components/Input";
 import Button from "../components/Button";
 import OtpInput from "../components/OtpInput";
 
-// --- Settings (guessed from the backend code, easy to change here) ---
-const OTP_EXPIRY_SEC = 60; // how long the OTP is valid
-const RESEND_COOLDOWN_SEC = 120; // how long until "Resend" unlocks
-const PASSWORD_MIN = 8; // backend password rule
+// --- Settings ---
+const OTP_EXPIRY_SEC = 60;
+const RESEND_COOLDOWN_SEC = 120;
+const PASSWORD_MIN = 8;
 
-// One heading per step, so each screen says what to do
 const TITLES = {
   1: "Create your account",
   2: "Check your email",
   3: "Choose a password",
 };
 
-// Glass card: the columns behind it stay visible through the box.
-// The [&_...] rules restyle the shared Input / OtpInput for the dark card,
-// so those components don't need to change.
+// Responsive Glass card: p-5 on mobile, p-8 on larger screens
 const CARD =
-  "w-full max-w-md rounded-2xl border border-white/15 bg-white/[0.06] p-8 text-white shadow-2xl backdrop-blur-[2px] " +
+  "w-full max-w-md rounded-2xl border border-white/15 bg-white/[0.06] p-5 sm:p-8 text-white shadow-2xl backdrop-blur-[2px] " +
   "[&_label]:text-white/80 " +
   "[&_input]:border-white/20 [&_input]:bg-white/5 [&_input]:text-white [&_input]:caret-white " +
   "[&_input]:placeholder:text-white/40";
 
-// White pill for the main action, outlined pill for the secondary one
-// (the trailing ! makes these win over Button's own colours)
-const PRIMARY = "w-full rounded-full! bg-white! text-black! hover:bg-white/90!";
+// Action buttons with touch-friendly heights and text scaling
+const PRIMARY = "w-full rounded-full! bg-white! text-black! hover:bg-white/90! text-sm sm:text-base py-2.5 sm:py-3";
 const SECONDARY =
-  "w-full rounded-full! border! border-white/25! bg-transparent! text-white! hover:bg-white/10!";
+  "w-full rounded-full! border! border-white/25! bg-transparent! text-white! hover:bg-white/10! text-sm sm:text-base py-2.5 sm:py-3";
 
-// Turns an axios error into a readable message
 function getErrorMessage(err, fallback = "Something went wrong. Please try again.") {
   if (!err.response) return "Can't reach the server. Check your connection.";
   const detail = err.response.data?.detail;
-  if (typeof detail === "string") return detail; // e.g. "Wrong code..."
-  if (Array.isArray(detail) && detail[0]?.msg) return detail[0].msg; // 422 validation
+  if (typeof detail === "string") return detail;
+  if (Array.isArray(detail) && detail[0]?.msg) return detail[0].msg;
   return fallback;
 }
 
 export default function Signup() {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const expiry = useCountdown(); // how long the OTP is valid
-  const resend = useCountdown(); // how long until "Resend" unlocks
+  const expiry = useCountdown();
+  const resend = useCountdown();
 
-  const [step, setStep] = useState(1); // 1 = email, 2 = code, 3 = password
+  const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
-  const [token, setToken] = useState(""); // proof of verified email, from step 2
+  const [token, setToken] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
-  const [error, setError] = useState(""); // one banner for errors from any step
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Send (or resend) the OTP. Used by step 1 and by the "Resend" button
   const requestOtp = async () => {
     setError("");
     setLoading(true);
     try {
       await sendOtp(email.trim());
       setOtp("");
-      expiry.start(OTP_EXPIRY_SEC); // start the expiry timer
-      resend.start(RESEND_COOLDOWN_SEC); // start the resend timer
+      expiry.start(OTP_EXPIRY_SEC);
+      resend.start(RESEND_COOLDOWN_SEC);
       setStep(2);
     } catch (err) {
       if (err.response?.status === 409) {
@@ -83,36 +77,32 @@ export default function Signup() {
     }
   };
 
-  // Step 1 submit: email form
   const handleEmailSubmit = (e) => {
     e.preventDefault();
     requestOtp();
   };
 
-  // Step 2 submit: check the code
   const handleVerify = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
     try {
       const data = await verifyOtp(email.trim(), otp);
-      setToken(data.token); // keep the proof token for step 3
-      expiry.reset(); // timers are no longer needed
+      setToken(data.token);
+      expiry.reset();
       resend.reset();
       setStep(3);
     } catch (err) {
-      setError(getErrorMessage(err)); // wrong code, expired, too many attempts
+      setError(getErrorMessage(err));
     } finally {
       setLoading(false);
     }
   };
 
-  // Step 3 submit: create the account, then sign in automatically
   const handleRegister = async (e) => {
     e.preventDefault();
     setError("");
 
-    // Check on our side first, so the user gets instant feedback
     if (password.length < PASSWORD_MIN) {
       return setError(`Password must be at least ${PASSWORD_MIN} characters.`);
     }
@@ -124,13 +114,11 @@ export default function Signup() {
     try {
       const data = await register(token, email.trim(), password);
 
-      // Backend returns 200 even when registration fails
       if (!data.status) {
         setError(data.message || "Could not create the account.");
         return;
       }
 
-      // Account created: sign in automatically, or fall back to the signin page
       try {
         await login(email.trim(), password);
         navigate("/dashboard", { replace: true });
@@ -144,7 +132,6 @@ export default function Signup() {
     }
   };
 
-  // Go back to step 1 and clear everything from step 2
   const changeEmail = () => {
     setError("");
     setOtp("");
@@ -153,8 +140,6 @@ export default function Signup() {
     setStep(1);
   };
 
-  // Google signup/signin is a full-page redirect, not an axios call.
-  // The backend starts the OAuth flow and sends the user to Google.
   const handleGoogle = () => {
     window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
   };
@@ -162,7 +147,7 @@ export default function Signup() {
   return (
     <AuthLayout>
       <div className={CARD}>
-        {/* Progress: three segments fill as you move through the steps */}
+        {/* Step Progress Bar */}
         <div className="flex gap-1.5" aria-hidden="true">
           {[1, 2, 3].map((n) => (
             <span
@@ -173,20 +158,22 @@ export default function Signup() {
             />
           ))}
         </div>
-        <p className="mt-3 text-sm text-white/60">Step {step} of 3</p>
-        <h1 className="mt-1 mb-6 text-2xl font-semibold tracking-tight">{TITLES[step]}</h1>
+        <p className="mt-3 text-xs sm:text-sm text-white/60">Step {step} of 3</p>
+        <h1 className="mt-1 mb-5 sm:mb-6 text-xl sm:text-2xl font-semibold tracking-tight">
+          {TITLES[step]}
+        </h1>
 
-        {/* One red banner for errors from any step */}
+        {/* Error Banner */}
         {error && (
           <div
             role="alert"
-            className="mb-4 rounded-lg border border-red-400/30 bg-red-500/10 px-3 py-2 text-sm text-red-200"
+            className="mb-4 rounded-lg border border-red-400/30 bg-red-500/10 px-3 py-2 text-xs sm:text-sm text-red-200 break-words"
           >
             {error}
           </div>
         )}
 
-        {/* STEP 1: email (plus Google option) */}
+        {/* STEP 1: Email */}
         {step === 1 && (
           <form onSubmit={handleEmailSubmit} className="space-y-4">
             <Input
@@ -201,36 +188,36 @@ export default function Signup() {
               Send code
             </Button>
 
-            {/* Divider */}
-            <div className="flex items-center gap-3 text-xs text-white/40">
+            <div className="flex items-center gap-3 text-xs text-white/40 my-2">
               <div className="h-px flex-1 bg-white/15" />
               or
               <div className="h-px flex-1 bg-white/15" />
             </div>
 
-            {/* Google button (type="button" so it never submits the form) */}
             <Button type="button" variant="secondary" onClick={handleGoogle} className={SECONDARY}>
-              <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+              <svg viewBox="0 0 24 24" className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" aria-hidden="true">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z" />
                 <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z" />
                 <path fill="#FBBC05" d="M5.84 14.1a6.6 6.6 0 0 1 0-4.2V7.06H2.18a11 11 0 0 0 0 9.88l3.66-2.84z" />
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A11 11 0 0 0 2.18 7.06l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z" />
               </svg>
-              Continue with Google
+              <span>Continue with Google</span>
             </Button>
           </form>
         )}
 
-        {/* STEP 2: 6-digit code */}
+        {/* STEP 2: 6-digit Code */}
         {step === 2 && (
           <form onSubmit={handleVerify} className="space-y-4">
-            <p className="text-sm text-white/70">
-              We sent a 6-digit code to <span className="font-medium text-white">{email}</span>.
+            <p className="text-xs sm:text-sm text-white/70 leading-relaxed">
+              We sent a 6-digit code to <span className="font-medium text-white break-all">{email}</span>.
             </p>
 
-            <OtpInput value={otp} onChange={setOtp} disabled={loading} />
+            <div className="overflow-x-auto py-1">
+              <OtpInput value={otp} onChange={setOtp} disabled={loading} />
+            </div>
 
-            <p className="text-center text-sm text-white/60">
+            <p className="text-center text-xs sm:text-sm text-white/60">
               {expiry.isRunning
                 ? `Code expires in ${formatTime(expiry.secondsLeft)}`
                 : "Code expired. Request a new one."}
@@ -245,7 +232,6 @@ export default function Signup() {
               Verify
             </Button>
 
-            {/* Resend is locked until the backend's cooldown is over */}
             <Button
               type="button"
               variant="secondary"
@@ -259,18 +245,17 @@ export default function Signup() {
             <button
               type="button"
               onClick={changeEmail}
-              className="w-full text-center text-sm text-white/60 underline-offset-4 hover:text-white hover:underline"
+              className="w-full text-center text-xs sm:text-sm text-white/60 underline-offset-4 hover:text-white hover:underline"
             >
               Use a different email
             </button>
           </form>
         )}
 
-        {/* STEP 3: password */}
+        {/* STEP 3: Password */}
         {step === 3 && (
           <form onSubmit={handleRegister} className="space-y-4">
-            {/* Name = the part of the email before the @ */}
-            <p className="text-sm text-white/70">
+            <p className="text-xs sm:text-sm text-white/70 leading-relaxed">
               Almost done, <span className="font-medium text-white">{getNameFromEmail(email)}</span>.
               Choose a password.
             </p>
@@ -298,7 +283,7 @@ export default function Signup() {
           </form>
         )}
 
-        <p className="mt-6 text-center text-sm text-white/60">
+        <p className="mt-5 sm:mt-6 text-center text-xs sm:text-sm text-white/60">
           Already have an account?{" "}
           <Link to="/signin" className="font-medium text-white underline-offset-4 hover:underline">
             Sign in

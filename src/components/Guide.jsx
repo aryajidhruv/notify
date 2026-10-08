@@ -22,37 +22,38 @@ const STEPS = [
     { topic: "Travel", text: "Notify me when the airline posts a schedule change for my route." },
     { topic: "Schools", text: "Tell me when the school publishes next term's holiday calendar." },
   ];
+  
   export default function Guide() {
     return (
       <>
-        {/* A real sequence, so numbered steps are fine here */}
-        <section id="how" className="scroll-mt-20 border-t border-white/10 py-16 sm:py-24">
+        {/* How it works section */}
+        <section id="how" className="scroll-mt-20 border-t border-white/10 px-4 py-12 sm:px-0 sm:py-20">
           <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">How it works</h2>
           <ol className="mt-8 grid gap-8 sm:grid-cols-3">
             {STEPS.map((step, i) => (
               <li key={step.title} className="border-t border-white/30 pt-4">
-                <p className="text-sm text-white/50">Step {i + 1}</p>
-                <h3 className="mt-1 text-lg font-medium">{step.title}</h3>
-                <p className="mt-2 text-sm text-white/60">{step.text}</p>
+                <p className="text-xs sm:text-sm text-white/50">Step {i + 1}</p>
+                <h3 className="mt-1 text-base sm:text-lg font-medium">{step.title}</h3>
+                <p className="mt-2 text-xs sm:text-sm text-white/60 leading-relaxed">{step.text}</p>
               </li>
             ))}
           </ol>
         </section>
   
-        {/* Real example sentences show the "plain English" benefit */}
-        <section id="examples" className="scroll-mt-20 border-t border-white/10 py-16 sm:py-24">
+        {/* Real example sentences */}
+        <section id="examples" className="scroll-mt-20 border-t border-white/10 px-4 py-12 sm:px-0 sm:py-20">
           <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
             Things you can ask Notify to watch for
           </h2>
-          <p className="mt-3 max-w-xl text-white/60">
+          <p className="mt-3 max-w-xl text-xs sm:text-sm text-white/60 leading-relaxed">
             Each interest is one sentence, between 5 and 200 characters. Add as many as you
             like for each page.
           </p>
           <ul className="mt-8 grid gap-x-10 gap-y-6 md:grid-cols-2">
             {EXAMPLES.map((ex) => (
               <li key={ex.topic} className="border-l border-sky-300/50 pl-4">
-                <p className="text-sm font-medium">{ex.topic}</p>
-                <p className="mt-1 text-white/60">"{ex.text}"</p>
+                <p className="text-xs sm:text-sm font-medium text-white">{ex.topic}</p>
+                <p className="mt-1 text-xs sm:text-sm text-white/60 leading-relaxed">"{ex.text}"</p>
               </li>
             ))}
           </ul>

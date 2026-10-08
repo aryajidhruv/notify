@@ -18,8 +18,7 @@ const GLINTS = [
   "via-sky-300/80",
 ];
 
-// Kinds of pages Notify is made for (categories, not partner logos)
-
+// Kinds of pages Notify is made for
 const SOURCES = [
   "Government sites",
   "City and council pages",
@@ -40,19 +39,18 @@ export default function Hero() {
 
   return (
     <section className="relative isolate overflow-hidden bg-black text-white">
-      {/* Text sits above the columns, in the valley's open space */}
-      <div className="relative z-10 mx-auto flex min-h-[680px] max-w-6xl flex-col items-center px-4 pt-20 text-center sm:min-h-[740px] sm:pt-28">
-        
-      <h1 className="max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">
-  Stop refreshing pages. Get an email when it happens.
-</h1>
-<p className="mt-5 max-w-md text-base text-white/70">
-  Paste a link and describe what you're waiting for in one sentence. Notify emails you
-  when it shows up.
-</p>
+      {/* Content Container - Dynamic padding instead of fixed min-heights */}
+      <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center px-4 pt-12 pb-28 text-center sm:pt-24 sm:pb-36">
+        <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-6xl leading-tight">
+          Stop refreshing pages. Get an email when it happens.
+        </h1>
+        <p className="mt-4 max-w-md text-sm sm:text-base text-white/70">
+          Paste a link and describe what you're waiting for in one sentence. Notify emails you
+          when it shows up.
+        </p>
 
-        {/* Fixed height so nothing jumps while the session restores */}
-        <div className="mt-8 flex min-h-[72px] flex-col items-center gap-3">
+        {/* Action Buttons */}
+        <div className="mt-6 flex min-h-[64px] flex-col items-center gap-3 sm:mt-8">
           {!loading &&
             (user ? (
               <Link
@@ -69,7 +67,7 @@ export default function Hero() {
                 >
                   Get started
                 </Link>
-                <a href="#example" className="text-sm text-white/60 hover:text-white">
+                <a href="#example" className="text-xs sm:text-sm text-white/60 hover:text-white">
                   See an example
                 </a>
               </>
@@ -77,32 +75,34 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Column stage (decorative) */}
+      {/* Column stage (decorative background) */}
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 flex h-[38%] items-end sm:h-[42%]"
+        className="absolute inset-x-0 bottom-0 flex h-[25%] sm:h-[35%] items-end pointer-events-none"
       >
         {HEIGHTS.map((h, i) => (
           <div
             key={i}
-            className="relative flex-1 border-l border-white/[0.07] bg-linear-to-b from-neutral-950 to-black transition-[height] duration-1000 ease-out motion-reduce:transition-none"
+            className="relative flex-1 border-l border-white/[0.07] bg-gradient-to-b from-neutral-950 to-black transition-[height] duration-1000 ease-out motion-reduce:transition-none"
             style={{
               height: ready ? `${h}%` : "0%",
-              transitionDelay: `${Math.abs(i - 4) * 90}ms`, // centre first, edges last
+              transitionDelay: `${Math.abs(i - 4) * 90}ms`, // fixed syntax typo
             }}
           >
             {/* Thin light line on top of the column */}
             <span
-              className={`absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent ${GLINTS[i]} to-transparent`}
+              className={`absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent ${GLINTS[i]} to-transparent`}
             />
           </div>
         ))}
       </div>
 
-      {/* Bottom row, like the logo strip in your reference */}
-      <div className="absolute inset-x-0 bottom-6 z-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-1 px-4 text-xs text-white/40">
+      {/* Bottom source tags */}
+      <div className="absolute inset-x-0 bottom-4 sm:bottom-6 z-10 flex flex-wrap items-center justify-center gap-x-4 sm:gap-x-6 gap-y-1 px-4 text-[11px] sm:text-xs text-white/40">
         {SOURCES.map((s) => (
-          <span key={s}>{s}</span>
+          <span key={s} className="whitespace-nowrap">
+            {s}
+          </span>
         ))}
       </div>
     </section>
