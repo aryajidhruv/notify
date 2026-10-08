@@ -34,9 +34,9 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative isolate overflow-hidden bg-black text-white">
-      {/* Content Container */}
-      <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center px-4 pt-10 pb-32 text-center sm:pt-20 sm:pb-40">
+    <section className="relative isolate overflow-hidden bg-black text-white pt-10 sm:pt-16 pb-6">
+      {/* 1. Main Content Section (Text & CTA Buttons) */}
+      <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center px-4 text-center">
         <h1 className="max-w-3xl text-3xl font-semibold tracking-tight sm:text-6xl leading-tight">
           Stop refreshing pages. Get an email when it happens.
         </h1>
@@ -46,7 +46,7 @@ export default function Hero() {
         </p>
 
         {/* Action Buttons */}
-        <div className="mt-6 flex min-h-[64px] flex-col items-center gap-3 sm:mt-8">
+        <div className="mt-6 flex min-h-[56px] flex-col items-center gap-3 sm:mt-8">
           {!loading &&
             (user ? (
               <Link
@@ -71,10 +71,10 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Background Decorative Columns */}
+      {/* 2. Column Stage (Bars sit below the content) */}
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 flex h-[22%] sm:h-[32%] items-end pointer-events-none"
+        className="mx-auto mt-8 flex h-28 sm:h-40 max-w-5xl items-end px-4 pointer-events-none"
       >
         {HEIGHTS.map((h, i) => (
           <div
@@ -85,6 +85,7 @@ export default function Hero() {
               transitionDelay: `${Math.abs(i - 4) * 90}ms`,
             }}
           >
+            {/* Thin light line on top of each bar */}
             <span
               className={`absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent ${GLINTS[i]} to-transparent`}
             />
@@ -92,20 +93,35 @@ export default function Hero() {
         ))}
       </div>
 
-      {/* Responsive Source Tags Strip */}
-      <div className="absolute inset-x-0 bottom-3 sm:bottom-6 z-20 overflow-hidden py-1">
-        {/* Mobile: Smooth Horizontal Marquee / Desktop: Clean Centered Flex */}
-        <div className="flex w-full items-center justify-center [mask-image:linear-gradient(to_right,transparent,black_15%,black_85%,transparent)] sm:[mask-image:none]">
-          <div className="flex shrink-0 animate-marquee sm:animate-none items-center justify-around gap-6 sm:gap-8 text-[11px] sm:text-xs text-white/40">
-            {SOURCES.concat(SOURCES).map((s, idx) => (
-              <span
-                key={`${s}-${idx}`}
-                className="whitespace-nowrap px-1 transition-colors hover:text-white/70"
-              >
-                {s}
-              </span>
-            ))}
-          </div>
+      {/* Inline Animation Style Keyframes (No external CSS required!) */}
+      <style>{`
+        @keyframes autoScrollSideways {
+          0% { transform: translateX(0%); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-auto-scroll {
+          display: flex;
+          width: max-content;
+          animation: autoScrollSideways 18s linear infinite;
+        }
+        .animate-auto-scroll:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
+
+      {/* 3. Automatic Sideways Scroll Strip (Strictly BELOW the bars) */}
+      <div className="mt-6 border-t border-white/10 pt-4 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+        <div className="animate-auto-scroll gap-8 text-xs text-white/40">
+          {/* Double array map for seamless 360-degree looping */}
+          {[...SOURCES, ...SOURCES].map((s, idx) => (
+            <span
+              key={`${s}-${idx}`}
+              className="flex items-center gap-8 whitespace-nowrap font-medium hover:text-white/80 transition-colors"
+            >
+              <span>{s}</span>
+              <span className="h-1 w-1 rounded-full bg-white/20" />
+            </span>
+          ))}
         </div>
       </div>
     </section>
