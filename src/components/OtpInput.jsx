@@ -7,7 +7,17 @@ export default function OtpInput({
   disabled = false,
   error = "", // error text shown under the boxes
 }) {
-  const refs = useRef([]); // the 6 input elements, so we can move focus
+  const refs = useRef([]); // the input elements, so we can move focus
+
+  // NEW: always holds the freshest code, even before React re-renders
+  const latest = useRef(value);
+  latest.current = value; // sync on every render (covers parent resets/clears)
+
+  // NEW: update the ref immediately, then tell the parent
+  const update = (next) => {
+    latest.current = next;
+    onChange(next);
+  };
 
   // Turn "123" into ["1","2","3","","",""] so each box has a value
   const digits = Array.from({ length }, (_, i) => value[i] || "");
@@ -16,20 +26,21 @@ export default function OtpInput({
   const handleChange = (i, e) => {
     const d = e.target.value.replace(/\D/g, "").slice(-1); // keep only the last digit typed
     if (!d) return; // ignore letters
-    const arr = value.split("");
+    const arr = latest.current.split("");
     arr[i] = d;
-    onChange(arr.join(""));
+    update(arr.join("")); // CHANGED: was onChange(...)
     if (i < length - 1) refs.current[i + 1]?.focus(); // move to the next box
   };
 
   // Backspace and arrow keys
   const handleKeyDown = (i, e) => {
+    const v = latest.current; // CHANGED: read from the ref, not the stale prop
     if (e.key === "Backspace") {
       e.preventDefault();
-      if (digits[i]) {
-        onChange(value.slice(0, i) + value.slice(i + 1)); // delete this digit
+      if (v[i]) {
+        update(v.slice(0, i) + v.slice(i + 1)); // delete this digit
       } else if (i > 0) {
-        onChange(value.slice(0, i - 1) + value.slice(i)); // delete the previous digit
+        update(v.slice(0, i - 1) + v.slice(i)); // delete the previous digit
         refs.current[i - 1]?.focus();
       }
     } else if (e.key === "ArrowLeft" && i > 0) {
@@ -44,13 +55,14 @@ export default function OtpInput({
     e.preventDefault();
     const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, length);
     if (!pasted) return;
-    onChange(pasted);
+    update(pasted); // CHANGED: was onChange(pasted)
     refs.current[Math.min(pasted.length, length - 1)]?.focus();
   };
 
   // Clicking a box past the first empty one sends focus back to it (no gaps)
   const handleFocus = (i, e) => {
-    if (i > value.length) refs.current[value.length]?.focus();
+    const len = latest.current.length; // CHANGED: the fix. Fresh length, not stale value.length
+    if (i > len) refs.current[len]?.focus();
     else e.target.select(); // select the digit so typing replaces it
   };
 
