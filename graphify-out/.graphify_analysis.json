@@ -1,0 +1,308 @@
+{
+  "communities": {
+    "0": [
+      "package",
+      "package_devdependencies",
+      "package_devdependencies_oxlint",
+      "package_devdependencies_types_react",
+      "package_devdependencies_types_react_dom",
+      "package_devdependencies_vite",
+      "package_devdependencies_vitejs_plugin_react",
+      "package_name",
+      "package_private",
+      "package_scripts",
+      "package_scripts_build",
+      "package_scripts_dev",
+      "package_scripts_lint",
+      "package_scripts_preview",
+      "package_type",
+      "package_version",
+      "ref_oxlint",
+      "ref_tailwindcss",
+      "ref_tailwindcss_vite",
+      "ref_types_react",
+      "ref_types_react_dom",
+      "ref_vite",
+      "ref_vitejs_plugin_react",
+      "vite_config"
+    ],
+    "1": [
+      "ref_react",
+      "src_api_auth",
+      "src_api_auth_getme",
+      "src_api_auth_logout",
+      "src_api_auth_refresh",
+      "src_api_auth_register",
+      "src_api_auth_sendotp",
+      "src_api_auth_signin",
+      "src_api_auth_verifyotp",
+      "src_components_otpinput",
+      "src_components_otpinput_otpinput",
+      "src_hooks_usecountdown",
+      "src_hooks_usecountdown_formattime",
+      "src_hooks_usecountdown_usecountdown",
+      "src_pages_signup",
+      "src_pages_signup_geterrormessage",
+      "src_pages_signup_signup",
+      "src_pages_signup_titles",
+      "src_utils_getname",
+      "src_utils_getname_getnamefromemail"
+    ],
+    "2": [
+      "src_components_alertdemo",
+      "src_components_alertdemo_alertdemo",
+      "src_components_alertdemo_other_mail",
+      "src_components_alertdemo_with",
+      "src_components_alertdemo_without",
+      "src_components_faq",
+      "src_components_faq_faq",
+      "src_components_faq_faqs",
+      "src_components_guide",
+      "src_components_guide_examples",
+      "src_components_guide_guide",
+      "src_components_guide_steps",
+      "src_components_hero",
+      "src_components_hero_glints",
+      "src_components_hero_heights",
+      "src_components_hero_hero",
+      "src_components_hero_sources",
+      "src_pages_landing",
+      "src_pages_landing_landing",
+      "src_pages_landing_nav_links"
+    ],
+    "3": [
+      "ref_react_router_dom",
+      "src_api_auth_googleauthurl",
+      "src_app",
+      "src_app_app",
+      "src_components_authlayout",
+      "src_components_authlayout_authlayout",
+      "src_components_authlayout_heights",
+      "src_components_protectedroute",
+      "src_components_protectedroute_protectedroute",
+      "src_components_spinner",
+      "src_components_spinner_sizes",
+      "src_components_spinner_spinner",
+      "src_context_authcontext_useauth",
+      "src_pages_notfound",
+      "src_pages_notfound_notfound",
+      "src_pages_signin",
+      "src_pages_signin_geterrormessage",
+      "src_pages_signin_signin"
+    ],
+    "4": [
+      "src_api_interests",
+      "src_api_interests_addinterests",
+      "src_api_interests_interest_max",
+      "src_api_interests_interest_min",
+      "src_api_interests_removeinterest",
+      "src_components_button",
+      "src_components_button_button",
+      "src_components_button_styles",
+      "src_components_input",
+      "src_components_input_input",
+      "src_components_interestchips",
+      "src_components_interestchips_interestchips",
+      "src_components_navbar",
+      "src_components_navbar_navbar",
+      "src_pages_dashboard",
+      "src_pages_dashboard_dashboard",
+      "src_pages_dashboard_geterrormessage",
+      "src_pages_dashboard_isvalidurl"
+    ],
+    "5": [
+      "ref_axios",
+      "ref_react_dom",
+      "src_api_client",
+      "src_api_client_api",
+      "src_api_client_getaccesstoken",
+      "src_api_client_setaccesstoken",
+      "src_context_authcontext",
+      "src_context_authcontext_authcontext",
+      "src_context_authcontext_authprovider",
+      "src_index",
+      "src_main"
+    ],
+    "6": [
+      "package_dependencies",
+      "package_dependencies_axios",
+      "package_dependencies_react",
+      "package_dependencies_react_dom",
+      "package_dependencies_react_router_dom",
+      "package_dependencies_tailwindcss",
+      "package_dependencies_tailwindcss_vite"
+    ],
+    "7": [
+      "oxlintrc",
+      "oxlintrc_plugins",
+      "oxlintrc_rules",
+      "oxlintrc_rules_react_only_export_components",
+      "oxlintrc_rules_react_rules_of_hooks",
+      "oxlintrc_schema"
+    ],
+    "8": [
+      "src_components_toast",
+      "src_components_toast_styles",
+      "src_components_toast_toastcontext",
+      "src_components_toast_toastprovider",
+      "src_components_toast_usetoast"
+    ],
+    "9": [
+      "vercel",
+      "vercel_rewrites"
+    ]
+  },
+  "cohesion": {
+    "0": 0.09057971014492754,
+    "1": 0.18947368421052632,
+    "2": 0.14210526315789473,
+    "3": 0.24183006535947713,
+    "4": 0.2679738562091503,
+    "5": 0.23636363636363636,
+    "6": 0.2857142857142857,
+    "7": 0.3333333333333333,
+    "8": 0.4,
+    "9": 1.0
+  },
+  "gods": [
+    {
+      "id": "src_pages_signup_signup",
+      "label": "Signup()",
+      "degree": 15
+    },
+    {
+      "id": "src_context_authcontext_useauth",
+      "label": "useAuth()",
+      "degree": 15
+    },
+    {
+      "id": "ref_react",
+      "label": "react",
+      "degree": 13
+    },
+    {
+      "id": "ref_react_router_dom",
+      "label": "react-router-dom",
+      "degree": 12
+    },
+    {
+      "id": "src_components_button_button",
+      "label": "Button()",
+      "degree": 11
+    },
+    {
+      "id": "src_pages_dashboard_dashboard",
+      "label": "Dashboard()",
+      "degree": 10
+    },
+    {
+      "id": "src_components_input_input",
+      "label": "Input()",
+      "degree": 9
+    },
+    {
+      "id": "src_pages_landing_landing",
+      "label": "Landing()",
+      "degree": 8
+    },
+    {
+      "id": "src_app_app",
+      "label": "App()",
+      "degree": 8
+    },
+    {
+      "id": "src_pages_signin_signin",
+      "label": "Signin()",
+      "degree": 8
+    }
+  ],
+  "surprises": [
+    {
+      "source": "App()",
+      "target": "Signup()",
+      "source_files": [
+        "src/App.jsx",
+        "src/pages/Signup.jsx"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "Signup()",
+      "target": "AuthLayout()",
+      "source_files": [
+        "src/pages/Signup.jsx",
+        "src/components/AuthLayout.jsx"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "Signup()",
+      "target": "Button()",
+      "source_files": [
+        "src/pages/Signup.jsx",
+        "src/components/Button.jsx"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "Signup()",
+      "target": "Input()",
+      "source_files": [
+        "src/pages/Signup.jsx",
+        "src/components/Input.jsx"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "Signup()",
+      "target": "useAuth()",
+      "source_files": [
+        "src/pages/Signup.jsx",
+        "src/context/AuthContext.jsx"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `react` connect `Signup.jsx` to `package.json`, `Landing.jsx`, `App.jsx`, `Dashboard.jsx`, `AuthContext.jsx`, `Toast.jsx`?",
+      "why": "High betweenness centrality (0.226) - this node is a cross-community bridge."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `oxlint`, `@types/react`, `@types/react-dom` to the rest of the system?",
+      "why": "45 weakly-connected nodes found - possible documentation gaps or missing edges."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `package.json` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.09057971014492754 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `react-router-dom` connect `App.jsx` to `package.json`, `Signup.jsx`, `Landing.jsx`, `Dashboard.jsx`, `AuthContext.jsx`?",
+      "why": "High betweenness centrality (0.196) - this node is a cross-community bridge."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Landing.jsx` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.14210526315789473 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `dependencies` connect `dependencies` to `package.json`?",
+      "why": "High betweenness centrality (0.085) - this node is a cross-community bridge."
+    }
+  ]
+}

@@ -127,7 +127,13 @@ Restart `npm run dev` after any change to `.env` or `vite.config.js`. Vite only 
 
 ```text
 1. Login/Signup   ──>   2. Normal API Call   ──>   3. Token Expire (401 Error)   ──>   4. Auto Refresh & Retry
+
+
+
+
 ```
+
+
 
 ### auth.js
 
@@ -290,6 +296,8 @@ Restart `npm run dev` after any change to `.env` or `vite.config.js`. Vite only 
   - Auto Focus Navigation.
   - Copy-Paste & Mobile Auto-Fill Support.
 
+- updates
+  - otp box error solved
 ### useCountdown.js
 
 - why
@@ -359,6 +367,7 @@ The landing page is split into small components, and `Landing.jsx` puts them tog
 ```
 
 - update the google signup
+
 
 ### signinjsx
 
@@ -481,3 +490,28 @@ Still needed for Google sign-in
 ### updates
 
 - user credetials page after successfull signup
+- add this url - auth/callback - refresh token from coockie -> access token -> redirect to dashboared
+
+
+- AuthCallback.jsx
+ - [ User clicks "Continue with Google" ]
+                  │
+                  ▼
+   [ Redirects to Google Consent ]
+                  │
+                  ▼
+[ FastApi Backend: Sets HTTP-Only Refresh Cookie ]
+                  │
+                  ▼
+[ Browser redirected to /auth/callback (AuthCallback.jsx) ]
+                  │
+                  ▼
+ [ AuthProvider fires silent refresh /auth/refresh ]
+                  │
+        ┌─────────┴─────────┐
+        ▼                   ▼
+    (Success)           (Failure)
+        │                   │
+        ▼                   ▼
+ Navigate to        Navigate to /signin
+ /dashboard        with state.error message

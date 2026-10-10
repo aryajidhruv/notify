@@ -39,7 +39,7 @@ export default function Signin() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(location.state?.error || "");;
   const [loading, setLoading] = useState(false);
 
   const redirectTo = location.state?.from?.pathname || "/dashboard";
